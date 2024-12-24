@@ -292,11 +292,15 @@ local function iter_cmd_sync(cmd_list)
       print(cmd.info)
     end
 
+    print(vim.inspect(cmd))
+
     if type(cmd.cmd) == "function" then
       cmd.cmd()
     else
       local ret = vim.fn.system(get_command(cmd))
+      print(ret)
       if vim.v.shell_error ~= 0 then
+        print("the command failed")
         print(ret)
         api.nvim_err_writeln(
           (cmd.err and cmd.err .. "\n" or "") .. "Failed to execute the following command:\n" .. vim.inspect(cmd)
@@ -480,8 +484,13 @@ local function install_lang(lang, ask_reinstall, cache_folder, install_folder, w
     end
   end
 
+  vim.notify("message from vim.notify", vim.log.levels.ERROR)
+  api.nvim_err_writeln("message from nvim_err_writeln")
+  print("message from print")
+
   local ok, install_info = pcall(get_parser_install_info, lang, true)
   if not ok then
+    -- here
     vim.notify("Installation not possible: " .. install_info, vim.log.levels.ERROR)
     if not parsers.get_parser_configs()[lang] then
       vim.notify(
