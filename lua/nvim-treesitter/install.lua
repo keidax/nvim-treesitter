@@ -297,15 +297,19 @@ local function iter_cmd_sync(cmd_list)
     if type(cmd.cmd) == "function" then
       cmd.cmd()
     else
+      print("running command: " .. get_command(cmd))
       local ret = vim.fn.system(get_command(cmd))
-      print(ret)
+
       if vim.v.shell_error ~= 0 then
-        print("the command failed")
+        print("the command failed:")
         print(ret)
         api.nvim_err_writeln(
           (cmd.err and cmd.err .. "\n" or "") .. "Failed to execute the following command:\n" .. vim.inspect(cmd)
         )
         return false
+      else
+        print("the command succeeded:")
+        print(ret)
       end
     end
   end
