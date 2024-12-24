@@ -82,7 +82,9 @@ jobs:
 
       - name: Post compile Windows
         if: runner.os == 'Windows'
-        run: cp -r ~/AppData/Local/nvim/pack/nvim-treesitter/start/nvim-treesitter/parser/* parser
+        run: |
+          dir ~/AppData/Local/nvim/pack/nvim-treesitter/start/nvim-treesitter/parser/*
+          cp -r ~/AppData/Local/nvim/pack/nvim-treesitter/start/nvim-treesitter/parser/* parser
 
       - name: Check query files
         run: $NVIM -l scripts/check-queries.lua
